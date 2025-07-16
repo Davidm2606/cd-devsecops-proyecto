@@ -25,32 +25,34 @@ jobs:
           echo "Simulando pruebas"
 
   sonarqube-analysis:
-    runs-on: ubuntu-latest
-    needs: build-test
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Install Java (requisito de SonarScanner)
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-
-      - name: Download SonarScanner
-        run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-          mv sonar-scanner-5.0.1.3006-linux sonar-scanner
-
-      - name: Run SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          ./sonar-scanner/bin/sonar-scanner \
-            -Dsonar.projectKey=proyecto-devsecops \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=http://localhost:9000 \
-            -Dsonar.login=${SONAR_TOKEN}
+            runs-on: ubuntu-latest
+            needs: build-test
+            steps:
+              - name: Checkout repo
+                uses: actions/checkout@v3
+        
+              - name: Install Java (requisito de SonarScanner)
+                uses: actions/setup-java@v3
+                with:
+                  java-version: '17'
+                  distribution: 'temurin'  # ✅ ESTA LÍNEA ARREGLA EL ERROR
+        
+              - name: Download SonarScanner
+                run: |
+                  wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+                  unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+                  mv sonar-scanner-5.0.1.3006-linux sonar-scanner
+        
+              - name: Run SonarQube Scan
+                env:
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+                run: |
+                  ./sonar-scanner/bin/sonar-scanner \
+                    -Dsonar.projectKey=proyecto-devsecops \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=http://localhost:9000 \
+                    -Dsonar.login=${SONAR_TOKEN}
+        
 
   security-scan:
     runs-on: ubuntu-latest
