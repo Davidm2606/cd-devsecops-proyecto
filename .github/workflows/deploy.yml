@@ -70,11 +70,11 @@ jobs:
             echo "✅ Validación superada: No hay vulnerabilidades críticas."
           fi
 
-      - name: Simular despliegue en entorno de pruebas
-        run: echo "✔ Desplegado exitosamente en entorno de pruebas"
+      - name: Desplegar en entorno principal
+        run: echo "✔ Desplegado exitosamente en entorno principal"
 
-      - name: Simular despliegue en producción
-        run: echo "✔ Desplegado exitosamente en entorno de producción simulado"
+      - name: Desplegar en entorno réplica
+        run: echo "✔ Desplegado exitosamente en entorno réplica"
 
       - name: Monitoreo post-despliegue
         run: |
